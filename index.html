@@ -25,21 +25,27 @@
 </head>
 
 <body>
-<!-- Created a container with an ID albums-->
-
+<!--  Just Created a container with an ID albums-->
   <div class="container" id="albums">
   </div>
 
   <script>
+    // creating a function called loadSongs where we have our searchQuery
     function loadSongs(searchQuery) {
-      //fetch the information from the web
-
+      // we are fetching the information from the web 
+      // Using a Method to fetch information from RapidAPI 
+      //The Fetch API provides a JavaScript interface for accessing and manipulating parts of the HTTP pipeline, 
+      //such as requests and responses. 
+      //It also provides a global fetch() method that provides an easy, logical way to fetch resources asynchronously across the network.
+     // limiting the query string to 6 parameters ("limit=6&q")
       fetch("https://deezerdevs-deezer.p.rapidapi.com/search?limit=6&q=" + searchQuery, {
         "headers": {
           "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
           "X-RapidAPI-Key": "90a4cce2e8msh71a30f294ae0070p198be9jsnb52964849910"
-        }
-      })
+        }// we get headers from=> https://rapidapi.com/deezerdevs/api/deezer-1 (search Rapid Api and the Deezer API)
+      })// .then function handles the response and then we are returing the it to a Json("The JSON object contains methods for parsing JavaScript Object Notation (JSON) and converting values to JSON.")
+      // The then() method returns a Promise. 
+      //It takes up to two arguments: callback functions for the "success" and "failure" causes of the Promise.
         .then(function(response){
           return response.json()
         }).then(function(songsResponse){
@@ -48,11 +54,15 @@
 
           // to put information inside a div
 
-          var div = "<div class ='row'>"
-
+          var div = `
+          <h3> ${searchQuery}</h3>
+          <hr>
+          <div class ='row'>`
+// As we look to the "Object" in console log we find that its store in data {data: Array(6), total: 300, next....
+ //creating a variable "songs" assigning to songsResponse.data
           let songs = songsResponse.data
           songs.forEach(song => {
-            // the song that we want to display
+            // the song that we want to display//using Template literals ${}
             div += `
             <div class="col-sm-4 col-md-2 col-lg-1 song">
             <img src= "${song.album.cover}" />
@@ -61,8 +71,8 @@
             </div>
              `
           })
-          // get reference these albums
-          document.querySelector("#albums").innerHtml += div + "</div>"
+          // geting the reference of these albums with
+          document.querySelector("#albums").innerHTML += div + "</div>"
         });
     }
    
